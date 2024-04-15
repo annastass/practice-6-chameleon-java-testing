@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DbGears xmlns="http://chameleon.ibs-qa.ru/schema/db">
+    <Connection name="h2 Embedded" driver="org.h2.Driver"
+                url="jdbc:h2:tcp://localhost:9092/mem:testdb;DB_CLOSE_DELAY=-1;user=#{user};password=#{pass}"
+                autoCommit="true">
+        <Params>
+            <FieldString name="user" locator="user"/>
+            <FieldString name="pass" locator="pass"/>
+        </Params>
+    </Connection>
+    <Query name="Вывод списка продуктов" statement="select * from FOOD order by FOOD_ID">
+        <Result>
+            <FieldInteger name="Идентификатор" locator="FOOD_ID"/>
+            <FieldString name="Имя" locator="FOOD_NAME"/>
+        </Result>
+    </Query>
+    <Query name="Добавление товара" statement="INSERT INTO FOOD (FOOD_NAME, FOOD_TYPE, FOOD_EXOTIC) VALUES (:FOOD_NAME, :FOOD_TYPE, :FOOD_EXOTIC)">
+        <Params>
+            <FieldString name="Наименование" locator="FOOD_NAME"/>
+            <FieldString name="Тип" locator="FOOD_TYPE"/>
+            <FieldNumber name="Экзотический" locator="FOOD_EXOTIC"/>
+        </Params>
+    </Query>
+    <Query name="Найти продукт" statement="SELECT * FROM FOOD WHERE FOOD_NAME = :FOOD_NAME">
+        <Params>
+            <FieldString name="Наименование" locator="FOOD_NAME"/>
+        </Params>
+        <Result>
+            <FieldInteger name="Идентификатор" locator="FOOD_ID"/>
+            <FieldString name="Имя" locator="FOOD_NAME"/>
+        </Result>
+    </Query>
+    <Query name="Удаление продукта (sql)" statement="classpath:/sql/delete.sql">
+        <Params>
+            <FieldString name="Наименование" locator="FOOD_NAME"/>
+        </Params>
+    </Query>
+    <Query name="Количество продуктов" statement="SELECT COUNT(*) AS total_products FROM FOOD">
+        <Result>
+            <FieldInteger name="Количество" locator="total_products"/>
+        </Result>
+    </Query>
+</DbGears>
